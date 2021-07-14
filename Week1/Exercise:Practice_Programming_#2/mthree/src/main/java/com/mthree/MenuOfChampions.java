@@ -22,7 +22,7 @@ public class MenuOfChampions {
 
         decorate();
     }
-
+    
     public static void decorate(){
         System.out.print("\n.");
         for (int i=0; i<20; i++){System.out.print("</\\>.");}
