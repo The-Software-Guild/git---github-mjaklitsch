@@ -6,7 +6,7 @@ package com.mthreetraining;
  */
 import java.util.Scanner;
 
- public class App 
+ public class WindowMaster 
 {
     public static void main( String[] args )
     {
