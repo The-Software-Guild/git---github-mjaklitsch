@@ -131,7 +131,7 @@ After all rounds have been played and the winner declared, the program must ask 
          * @param s A Scanner object used to read input from the source
          * @param target The target for the user input, not case sensitive
          * 
-         * @return boolean value corresponding to (user input == target)
+         * @return boolean value corresponding to (input == target)
          */
         boolean is = false;
         System.out.println(prompt);

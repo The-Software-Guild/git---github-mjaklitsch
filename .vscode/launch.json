@@ -6,6 +6,19 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch HealthyHearts",
+            "request": "launch",
+            "mainClass": "main.java.com.mthree.HealthyHearts"
+        },
+        {
+            "type": "java",
+            "name": "Launch RockPaperScissors",
+            "request": "launch",
+            "mainClass": "com.mthree.RockPaperScissors",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "Launch Interest",
             "request": "launch",
             "mainClass": "com.mthree.Interest",
