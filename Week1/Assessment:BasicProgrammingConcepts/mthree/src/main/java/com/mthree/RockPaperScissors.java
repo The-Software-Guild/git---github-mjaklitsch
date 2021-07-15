@@ -1,4 +1,4 @@
-package com.mthree;
+// package com.mthree;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
@@ -113,6 +113,7 @@ After all rounds have been played and the winner declared, the program must ask 
         } catch(Exception e) {
             System.out.println("Not a number in range [" + low + "," + high + "), try again");
         }
+
         if (low <= num && num < high){
             return num;
         } else { 
