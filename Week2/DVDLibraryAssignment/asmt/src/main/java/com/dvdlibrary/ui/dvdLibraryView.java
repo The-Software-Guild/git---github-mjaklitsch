@@ -10,6 +10,9 @@ public class dvdLibraryView {
 
     private UserIO io = new UserIOConsoleImpl();
     private final String DELIMITER_CHARACTER = ":";
+    private enum ATTRIBUTE {
+        TITLE, RELEASE_DATE, DIRECTOR, STUDIO, MPAA_RATING, USER_RATING;
+    };
 
     // ===== Information Displays =====
     public int displayMenuAndGetSelection() {
@@ -67,47 +70,21 @@ public class dvdLibraryView {
 
     // ===== Data Builders =====
     public DVD createNewDVDFromInput() {
-        String DVDTitle = "", releaseDate = "", director = "", 
-         studio = "", MPAArating = "", userNote = "";
-        // Use do-while loops to remove chance of corrupting
-        // file data which is marshalled and unmarshalled 
-        // using "::" as a delimiter
-        while(DVDTitle.isEmpty() || DVDTitle.contains(DELIMITER_CHARACTER)){
-            io.print("DVD data cannot be empty and cannot include ':'");
-            DVDTitle = getDVDTitleChoice();
-        }
+        String DVDTitle = getChoiceDelimiterCatcher(ATTRIBUTE.TITLE),
+         releaseDate = getChoiceDelimiterCatcher(ATTRIBUTE.RELEASE_DATE),
+         director = getChoiceDelimiterCatcher(ATTRIBUTE.DIRECTOR), 
+         studio = getChoiceDelimiterCatcher(ATTRIBUTE.STUDIO), 
+         MPAArating = getChoiceDelimiterCatcher(ATTRIBUTE.MPAA_RATING), 
+         userRating = getChoiceDelimiterCatcher(ATTRIBUTE.USER_RATING);
+        
+        String[] userSplit = userRating.split(":");
+        Integer userScore = Integer.parseInt(userSplit[0]);
+        String userNote = userSplit[1];
 
-        while(releaseDate.isEmpty() || releaseDate.contains(DELIMITER_CHARACTER)){
-            io.print("DVD data cannot be empty and cannot include ':'");
-            releaseDate = getReleaseDateChoice();
-        }
-
-        while(director.isEmpty() || director.contains(DELIMITER_CHARACTER)){
-            io.print("DVD data cannot be empty and cannot include ':'");
-            director = getDirectorChoice();
-        }
-
-        while(studio.isEmpty() || studio.contains(DELIMITER_CHARACTER)){
-            io.print("DVD data cannot be empty and cannot include ':'");
-            studio = getStudioChoice();
-        }
-
-        while(MPAArating.isEmpty() || MPAArating.contains(DELIMITER_CHARACTER)){
-            io.print("DVD data cannot be empty and cannot include ':'");
-            MPAArating = getMPAARatingChoice();
-        }
-
-        while(userNote.isEmpty() || userNote.contains(DELIMITER_CHARACTER)){
-            io.print("DVD data cannot be empty and cannot include ':'");
-            userNote = getUserNoteChoice();
-        }
-         
-
-        Integer userRating = getUserRatingChoice();
         
         
         DVD currentDVD = new DVD(DVDTitle, director, releaseDate, studio, MPAArating, 
-          new SimpleEntry<Integer,String>(userRating, userNote));
+          new SimpleEntry<Integer,String>(userScore, userNote));
         
         return currentDVD;
     }
@@ -127,54 +104,13 @@ public class dvdLibraryView {
             + ")\n7. Return to Main Menu");
 
         int editChoice = io.readInt("Please select from the above choices.", 1, 7);
-        String edit = "";
-        switch(editChoice){
-        // Use do-while loops to remove chance of corrupting
-        // file data which is marshalled and unmarshalled 
-        // using "::" as a delimiter
-        case 1: // title
-            while(edit.isEmpty() || edit.contains(DELIMITER_CHARACTER)){
-                io.print("DVD data cannot be empty and cannot include ':'");
-                edit = getDVDTitleChoice();
-            }
-            break;
-        case 2: // date
-            while(edit.isEmpty() || edit.contains(DELIMITER_CHARACTER)){
-                io.print("DVD data cannot be empty and cannot include ':'");
-                edit = getReleaseDateChoice();
-            }
-            break;
-        case 3: // director
-            while(edit.isEmpty() || edit.contains(DELIMITER_CHARACTER)){
-                io.print("DVD data cannot be empty and cannot include ':'");
-                edit = getDirectorChoice();
-            }
-            break;
-        case 4: // studio
-            while(edit.isEmpty() || edit.contains(DELIMITER_CHARACTER)){
-                io.print("DVD data cannot be empty and cannot include ':'");
-                edit = getStudioChoice();
-            }
-            break;
-        case 5: // mpaa rating
-            while(edit.isEmpty() || edit.contains(DELIMITER_CHARACTER)){
-                io.print("DVD data cannot be empty and cannot include ':'");
-                edit = getMPAARatingChoice();
-            }
-            break;
-        case 6: // user rating
-            while(edit.isEmpty() || edit.contains(DELIMITER_CHARACTER)){
-                io.print("DVD data cannot be empty and cannot "
-                + "include ':' anywhere or ':' at the start of your note");
-                String rating = Integer.toString(getUserRatingChoice());
-                String note = getUserNoteChoice();
-                edit = rating+":"+note;
-            }
-            break;
-        case 7: // calling function must handle null as exit
+        
+        if(editChoice == 7){
             return null;
-            
         }
+
+        ATTRIBUTE attributeTarget = ATTRIBUTE.values()[editChoice-1];
+        String edit = getChoiceDelimiterCatcher(attributeTarget);
 
         return new SimpleEntry<Integer,String>(editChoice, edit);
     }
@@ -206,6 +142,44 @@ public class dvdLibraryView {
         Integer releaseDay = io.readInt("Please enter the day of release(1-"+monthLength+").",1,monthLength);
         String releaseDate = releaseMonth + "-" + releaseDay + "-" + releaseYear;
         return releaseDate;
+    }
+    public String getChoiceDelimiterCatcher(ATTRIBUTE attribute){
+        String input = "";
+        String score = "";
+
+        while(input.isEmpty() || input.contains(DELIMITER_CHARACTER)){
+            io.print("DVD data cannot be empty and cannot include ':'");
+            switch(attribute){
+                case TITLE:
+                    input = getDVDTitleChoice();
+                    break;
+                case DIRECTOR:
+                    input = getDirectorChoice();
+                    break;
+                case STUDIO:
+                    input = getStudioChoice();
+                    break;
+                case RELEASE_DATE:
+                    input = getReleaseDateChoice();
+                    break;
+                case MPAA_RATING:
+                    input = getMPAARatingChoice();
+                    break;
+                case USER_RATING:
+                    score = Integer.toString(getUserRatingChoice());
+                    input = getUserNoteChoice();
+                    break;
+                default:
+                    input = io.readString("Please enter desired value.");
+            }
+
+        }
+
+        if (ATTRIBUTE.USER_RATING == attribute){
+            input = score+":"+input;
+        }
+
+        return input;
     }
     public String getDVDTitleChoice(){
         return io.readString("Please enter the DVD title.");
