@@ -9,7 +9,7 @@ import com.dvdlibrary.dto.DVD;
 public class dvdLibraryView {
 
     private UserIO io = new UserIOConsoleImpl();
-    private final String DELIMITER = "::";
+    private final String DELIMITER_CHARACTER = ":";
 
     // ===== Information Displays =====
     public int displayMenuAndGetSelection() {
@@ -67,33 +67,40 @@ public class dvdLibraryView {
 
     // ===== Data Builders =====
     public DVD createNewDVDFromInput() {
-        String DVDTitle, releaseDate, director, studio, MPAArating, userNote;
+        String DVDTitle = "", releaseDate = "", director = "", 
+         studio = "", MPAArating = "", userNote = "";
         // Use do-while loops to remove chance of corrupting
         // file data which is marshalled and unmarshalled 
         // using "::" as a delimiter
-        do {
+        while(DVDTitle.isEmpty() || DVDTitle.contains(DELIMITER_CHARACTER)){
+            io.print("DVD data cannot be empty and cannot include ':'");
             DVDTitle = getDVDTitleChoice();
-        } while(DVDTitle.contains(DELIMITER));
+        }
 
-        do {
+        while(releaseDate.isEmpty() || releaseDate.contains(DELIMITER_CHARACTER)){
+            io.print("DVD data cannot be empty and cannot include ':'");
             releaseDate = getReleaseDateChoice();
-        } while(releaseDate.contains(DELIMITER));
+        }
 
-        do {
+        while(director.isEmpty() || director.contains(DELIMITER_CHARACTER)){
+            io.print("DVD data cannot be empty and cannot include ':'");
             director = getDirectorChoice();
-        } while(director.contains(DELIMITER));
+        }
 
-        do {
+        while(studio.isEmpty() || studio.contains(DELIMITER_CHARACTER)){
+            io.print("DVD data cannot be empty and cannot include ':'");
             studio = getStudioChoice();
-        } while(studio.contains(DELIMITER));
+        }
 
-        do {
+        while(MPAArating.isEmpty() || MPAArating.contains(DELIMITER_CHARACTER)){
+            io.print("DVD data cannot be empty and cannot include ':'");
             MPAArating = getMPAARatingChoice();
-        } while(MPAArating.contains(DELIMITER));
+        }
 
-        do {
+        while(userNote.isEmpty() || userNote.contains(DELIMITER_CHARACTER)){
+            io.print("DVD data cannot be empty and cannot include ':'");
             userNote = getUserNoteChoice();
-        } while(userNote.contains(DELIMITER));
+        }
          
 
         Integer userRating = getUserRatingChoice();
@@ -126,54 +133,43 @@ public class dvdLibraryView {
         // file data which is marshalled and unmarshalled 
         // using "::" as a delimiter
         case 1: // title
-            do {
-                if(edit.contains(DELIMITER)){
-                    io.print("DVD data cannot include '::'");
-                }
+            while(edit.isEmpty() || edit.contains(DELIMITER_CHARACTER)){
+                io.print("DVD data cannot be empty and cannot include ':'");
                 edit = getDVDTitleChoice();
-            } while(edit.contains(DELIMITER));
+            }
             break;
         case 2: // date
-            do {
-                if(edit.contains(DELIMITER)){
-                    io.print("DVD data cannot include '::'");
-                }
+            while(edit.isEmpty() || edit.contains(DELIMITER_CHARACTER)){
+                io.print("DVD data cannot be empty and cannot include ':'");
                 edit = getReleaseDateChoice();
-            } while(edit.contains(DELIMITER));
+            }
             break;
         case 3: // director
-            do {
-                if(edit.contains(DELIMITER)){
-                    io.print("DVD data cannot include '::'");
-                }
+            while(edit.isEmpty() || edit.contains(DELIMITER_CHARACTER)){
+                io.print("DVD data cannot be empty and cannot include ':'");
                 edit = getDirectorChoice();
-            } while(edit.contains(DELIMITER));
+            }
             break;
         case 4: // studio
-            do {
-                if(edit.contains(DELIMITER)){
-                    io.print("DVD data cannot include '::'");
-                }
+            while(edit.isEmpty() || edit.contains(DELIMITER_CHARACTER)){
+                io.print("DVD data cannot be empty and cannot include ':'");
                 edit = getStudioChoice();
-            } while(edit.contains(DELIMITER));
+            }
             break;
         case 5: // mpaa rating
-            do {
-                if(edit.contains(DELIMITER)){
-                    io.print("DVD data cannot include '::'");
-                }
+            while(edit.isEmpty() || edit.contains(DELIMITER_CHARACTER)){
+                io.print("DVD data cannot be empty and cannot include ':'");
                 edit = getMPAARatingChoice();
-            } while(edit.contains(DELIMITER));
+            }
             break;
         case 6: // user rating
-            do {
-                if(edit.contains(DELIMITER)){
-                    io.print("DVD data cannot include '::' anywhere or ':' at the start of your note");
-                }
+            while(edit.isEmpty() || edit.contains(DELIMITER_CHARACTER)){
+                io.print("DVD data cannot be empty and cannot "
+                + "include ':' anywhere or ':' at the start of your note");
                 String rating = Integer.toString(getUserRatingChoice());
                 String note = getUserNoteChoice();
                 edit = rating+":"+note;
-            } while(edit.contains(DELIMITER));
+            }
             break;
         case 7: // calling function must handle null as exit
             return null;
